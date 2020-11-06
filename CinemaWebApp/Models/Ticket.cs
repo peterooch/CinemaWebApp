@@ -7,7 +7,7 @@ namespace CinemaWebApp.Models
 {
     public class Ticket
     {
-        public List<int> seats;
-        public Screening screening;
+        public List<int> Seats { get; set; }
+        public Screening Screening { get; set; }
     }
 }

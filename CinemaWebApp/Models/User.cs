@@ -2,13 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CinemaWebApp.Models
 {
     public class User
     {
-        public string Email;
-        public string FirstName;
-        public string LastName;
+        [Key]
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        protected string PasswordHash { get; set; }
+        protected string PasswordSalt { get; set; }
+
+        public bool VerifyPassword(string password)
+        {
+            using SHA512Managed HashObject = new SHA512Managed();
+            /* Get bytes for combined string */
+            byte[] BytesToHash = Encoding.UTF8.GetBytes(password + PasswordSalt);
+            /* Get hash result for combined string*/
+            string HashString = Encoding.UTF8.GetString(HashObject.ComputeHash(BytesToHash));
+
+            /* Now check if it matches the stored hashed password */
+            if (HashString == PasswordHash)
+                return true;
+
+            return false;
+        }
+
+        public void StorePassword(string password)
+        {
+            using SHA512Managed HashObject = new SHA512Managed();
+            using RNGCryptoServiceProvider rngObject = new RNGCryptoServiceProvider();
+            byte[] rngBytes = new byte[64];
+
+            /* Generate new salt */
+            rngObject.GetBytes(rngBytes);
+            PasswordSalt = Encoding.UTF8.GetString(rngBytes);
+
+            /* Hash password with salt and store result */
+            byte[] BytesToHash = Encoding.UTF8.GetBytes(password + PasswordSalt);
+            PasswordHash = Encoding.UTF8.GetString(HashObject.ComputeHash(BytesToHash));
+        }
     }
 }

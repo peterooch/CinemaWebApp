@@ -7,10 +7,10 @@ namespace CinemaWebApp.Models
 {
     public class Screening
     {
-        public int HallNumber;
-        public DateTime StartTime;
-        public TimeSpan Duretion;
-        public List<Ticket> Taken;
-        public Movie movie;
+        public int HallNumber { get; set; }
+        public Movie Movie { get; set; }
+        public DateTime StartTime { get; set; }
+        public TimeSpan Duration { get; set; }
+        public List<Ticket> Taken { get; set; }
     }
 }
