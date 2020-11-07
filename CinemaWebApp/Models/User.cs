@@ -11,6 +11,7 @@ namespace CinemaWebApp.Models
     public class User
     {
         [Key]
+        public int UserID { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -25,11 +26,8 @@ namespace CinemaWebApp.Models
             /* Get hash result for combined string*/
             string HashString = Encoding.UTF8.GetString(HashObject.ComputeHash(BytesToHash));
 
-            /* Now check if it matches the stored hashed password */
-            if (HashString == PasswordHash)
-                return true;
-
-            return false;
+            /* Now check if it matches the stored hashed password */ 
+            return HashString == PasswordHash;
         }
 
         public void StorePassword(string password)

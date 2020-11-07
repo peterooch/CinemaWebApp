@@ -7,6 +7,6 @@ namespace CinemaWebApp.Models
 {
     public class Admin : User
     {
-        
+        /* This class is just to have a difference between admins and users */
     }
 }

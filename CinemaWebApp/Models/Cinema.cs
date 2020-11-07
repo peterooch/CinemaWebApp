@@ -12,7 +12,7 @@ namespace CinemaWebApp.Models
             /* Do initialization stuff here */
         }
 
-        private static readonly Lazy<Cinema> Singleton = new Lazy<Cinema>(() => new Cinema());
+        private static readonly Lazy<Cinema> Singleton = new Lazy<Cinema>();
 
         public static Cinema Instance
         {
