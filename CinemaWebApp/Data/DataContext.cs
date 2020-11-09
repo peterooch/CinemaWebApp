@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,27 @@ namespace CinemaWebApp.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketOrder> TicketOrders { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        public DataContext(DbContextOptions options)
+            : base(options)
         {
-            options.UseSqlite("Data Source=data.db");
+        }
+        /* This static method is makes class compatible with multiple database providers,
+           just need to have the proper settings stored in appsettings.json and add code to enable new providers
+        */
+        public static DbContextOptionsBuilder GetOptions(DbContextOptionsBuilder options, IConfiguration configuration)
+        {
+            string dbType = configuration["DatabaseType"];
+
+            switch (dbType)
+            {
+                case "SQLITE":
+                    options.UseSqlite(configuration.GetConnectionString(dbType));
+                    break;
+                /* Implement other providers here */
+                default:
+                    throw new NotImplementedException($"Database type \"{dbType}\" is not known, please implement suitable case for it");
+            }
+            return options;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
