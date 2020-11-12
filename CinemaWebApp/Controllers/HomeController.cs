@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CinemaWebApp.Models;
+using CinemaWebApp.Data;
 
 namespace CinemaWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DataContext context;
+        public HomeController(DataContext context)
         {
-            _logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
