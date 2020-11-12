@@ -34,6 +34,9 @@ namespace CinemaWebApp.Data
                 case "SQLITE":
                     options.UseSqlite(configuration.GetConnectionString(dbType));
                     break;
+                case "SQLSERVER":
+                    options.UseSqlServer(configuration.GetConnectionString(dbType));
+                    break;
                 /* Implement other providers here */
                 default:
                     throw new NotImplementedException($"Database type \"{dbType}\" is not known, please implement suitable case for it");
