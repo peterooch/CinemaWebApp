@@ -12,10 +12,5 @@ namespace CinemaWebApp.Controllers
         {
             return View();
         }
-        public IActionResult Register()
-        {
-            return View();
-        }
-
     }
 }

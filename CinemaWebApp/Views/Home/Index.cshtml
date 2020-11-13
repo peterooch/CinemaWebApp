@@ -1,83 +1,23 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    ViewData["Styles"] = new string[] { "/css/home.css" };
 }
 
-
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta name="OrderTicket" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            margin: 0;
-            font-size: 15px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .header {
-            background-color: #f1f1f1;
-            padding: 30px;
-            text-align: center;
-        }
-
-        #navbar {
-            overflow: hidden;
-            background-color: #333;
-            padding: 50px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-            #navbar a {
-                float: left;
-                display: block;
-                color: #f2f2f2;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 30px;
-            }
-
-                #navbar a:hover {
-                    background-color: #ddd;
-                    color: black;
-                }
-
-                #navbar a.active {
-                    background-color: #4CAF50;
-                    color: white;
-                }
-
-        .content {
-            padding: 16px;
-        }
-
-        .sticky {
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
-
-            .sticky + .content {
-                padding-top: 60px;
-            }
-    </style>
-</head>
-<body>
-    <div id="navbar">
-        <div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                &#x1f3a5;
-                Select movie
-            </button>
-            <div class="dropdown-menu">
-                ...
-            </div>
-        </div>
-        
+<div id="navbar">
     <div class="btn-group">
-        <button id="datepicker" class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            &#x1f3a5;
+            Select movie
+        </button>
+        <div class="dropdown-menu">
+            ...
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button id="datepicker" class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             &#x1f4c5;
             Select date
 
@@ -86,38 +26,36 @@
             ...
         </div>
     </div>
-        
-        <div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                &#x23f1;
-                Select hour
-            </button>
-            <div class="dropdown-menu">
-                ...
-            </div>
-        </div>
 
-        <button type="button" class="btn btn-secondary btn-lg">
-            Buy tickets
+    <div class="btn-group">
+        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            &#x23f1;
+            Select hour
         </button>
-
+        <div class="dropdown-menu">
+            ...
+        </div>
     </div>
 
+    <button type="button" class="btn btn-secondary btn-lg">
+        Buy tickets
+    </button>
 
-    <script>
-        window.onscroll = function () { myFunction() };
+</div>
 
-        var navbar = document.getElementById("navbar");
-        var sticky = navbar.offsetTop;
 
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                navbar.classList.add("sticky")
-            } else {
-                navbar.classList.remove("sticky");
-            }
+<script>
+    window.onscroll = function () { myFunction() };
+
+    var navbar = document.getElementById("navbar");
+    var sticky = navbar.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+        } else {
+            navbar.classList.remove("sticky");
         }
-    </script>
-
-</body>
-</html>
+    }
+</script>

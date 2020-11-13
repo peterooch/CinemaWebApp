@@ -6,6 +6,13 @@
     <title>@ViewData["Title"] - CinemaWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @if (ViewData["Styles"] is string[] styles)
+    {
+        foreach (string style in styles)
+        {
+            <link rel="stylesheet" href="@style" />
+        }
+    }
 </head>
 <body>
     <header>
@@ -22,13 +29,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Schedule">Schedule</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Schedule</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Register" >Register</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Index" >Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SignIn" asp-action="SignIn" >Sign in</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SignIn" asp-action="Index" >Sign in</a>
                         </li>
                     </ul>
                 </div>
