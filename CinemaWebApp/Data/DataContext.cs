@@ -11,12 +11,12 @@ namespace CinemaWebApp.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Screening> Screenings { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<TicketOrder> TicketOrders { get; set; }
+        public DbSet<User> Users { get; }
+        public DbSet<Admin> Admins { get; }
+        public DbSet<Movie> Movies { get; }
+        public DbSet<Screening> Screenings { get; }
+        public DbSet<Ticket> Tickets { get; }
+        public DbSet<TicketOrder> TicketOrders { get; }
 
         public DataContext(DbContextOptions options)
             : base(options)
