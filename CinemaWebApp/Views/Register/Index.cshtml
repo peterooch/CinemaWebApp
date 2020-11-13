@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Register";
+    ViewData["Styles"] = new string[] { "/css/register.css" };
+}
+
+<form action="/Register/AddUser" method="post">
+    <div class="cust_container">
+        <h1>Register</h1>
+        <p>Please fill in this form to create an account.</p>
+        <label for="Firstname">First name</label>
+        <input type="text" placeholder="Enter First name" name="FirstName" id="firstname" required>
+
+        <label for="Lastname">Last name</label>
+        <input type="text" placeholder="Enter Last name" name="LastName" id="lastname" required>
+
+        <label for="email">Email</label>
+        <input type="text" placeholder="Enter Email" name="email" id="email" required>
+
+        <label for="psw">Password</label>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+        <label for="psw-repeat">Repeat Password</label>
+        <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+
+        <button type="submit" class="registerbtn">Register</button>
+        <div class="SignIn">
+            <p>Already have an account? <a href="/SignIn/">Sign in</a>.</p>
+        </div>
+    </div>
+</form>
