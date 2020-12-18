@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+@{ 
+    char[] alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z' };
+}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .center {
+            margin: auto;
+            width: 60%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
+
+        .seat {
+            height: 40px;
+            width: 40px;
+            border: 1px solid gray;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .walk {
+            padding-left: 20px;
+        }
+    </style>
+
+
+
+</head>
+<body>
+
+    <div style="border:1px solid gray; width:500px;" class="center">
+        <table>
+            <thead>
+                @for (int i = 0; i <= 11; i++)
+                {
+                    if (i==0)
+                    {
+                        <th></th>
+                    }
+                    else
+                    {
+                        <th>@i</th>
+                    }
+                }
+            </thead>
+                @for (int i = 0; i <= 10; i++)
+                {
+            <tr>
+                <th>@alphabet[i]</th>
+                @for (int j = 0; j <= 10; j++)
+                {
+                    <td><div class="seat"> &#x1f4ba;</div></td>
+                }
+            </tr>
+                }
+            <!--<tr>
+                <td><div class="seat"></div> </td>
+                <td><div class="seat"></div></td>
+                <td class="walk">  </td>
+                <td><div class="seat"></div></td>
+                <td><div class="seat"></div></td>
+            </tr>-->
+        </table>
+    </div>
+
+
+    <script>
+
+        allSeats = document.querySelectorAll('.seat');
+        for (var i = 0; i < allSeats.length; i++) {
+            var seat = allSeats[i];
+            seat.addEventListener('click', function () {
+                var bgclr = this.style.backgroundColor;
+                if(bgclr =='red')
+                    this.style.backgroundColor = 'white'
+                else
+                    this.style.backgroundColor = 'red'
+                debugger
+            }, false);
+        }
+
+    </script>
+
+
+</body>
+</html>
