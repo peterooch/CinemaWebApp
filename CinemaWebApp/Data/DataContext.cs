@@ -11,12 +11,13 @@ namespace CinemaWebApp.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<User> Users { get; }
-        public DbSet<Admin> Admins { get; }
-        public DbSet<Movie> Movies { get; }
-        public DbSet<Screening> Screenings { get; }
-        public DbSet<Ticket> Tickets { get; }
-        public DbSet<TicketOrder> TicketOrders { get; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set;  }
+        public DbSet<TicketOrder> TicketOrders { get; set; }
+        public DbSet<Hall> Halls { get; set; }
 
         public DataContext(DbContextOptions options)
             : base(options)
@@ -47,7 +48,7 @@ namespace CinemaWebApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Screening>()
-                .HasKey(s => new { s.HallNumber, s.StartTime });
+                .HasKey(s => new { s.Hall.Id, s.StartTime });
             modelBuilder.Entity<User>()
                 .HasAlternateKey(u => u.Email);
         }

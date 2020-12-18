@@ -6,7 +6,7 @@ namespace CinemaWebApp.Models
 {
     public class Screening : IComparable<Screening>
     {
-        public int HallNumber { get; set; }
+        public Hall Hall { get; set; }
         public Movie Movie { get; set; }
         public DateTime StartTime { get; set; }
         public TimeSpan Duration { get; set; }
@@ -18,7 +18,7 @@ namespace CinemaWebApp.Models
            e.g. cant have overlapping screenings in the same hall */
         public bool Overlap(Screening s)
         {
-            if (HallNumber != s.HallNumber)
+            if (Hall.Id != s.Hall.Id)
                 return false;
 
             /* TESTME */
@@ -32,7 +32,7 @@ namespace CinemaWebApp.Models
         public override bool Equals(object o)
         {
             if (o is Screening s)
-                return HallNumber == s.HallNumber && StartTime == s.StartTime;
+                return Hall.Id == s.Hall.Id && StartTime == s.StartTime;
             return false;
         }
         public static bool operator ==(Screening lhs, Screening rhs) => lhs.Equals(rhs);
