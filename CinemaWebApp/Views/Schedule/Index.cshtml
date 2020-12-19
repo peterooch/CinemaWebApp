@@ -1,0 +1,31 @@
+@model CinemaWebApp.Models.ScreeningsBag
+@{
+    ViewData["Title"] = "Weekly Schedule";
+}
+<p>
+    <table class="table" style="text-align: center;">
+        <thead>
+            <th scope="col">Hall</th>
+            @foreach (DayOfWeek Day in Model.DayIterator)
+            {
+                <th>@Day.ToString()</th>
+            }
+        </thead>
+        <tbody>
+            <tr id="flexboxes">
+                <td class="data_col" textid="Hall">
+                @foreach (Hall hall in Model.Halls)
+                {
+                    <div style="background-color: @((hall.Id == Model.SelectedHall) ? "blue" : "white");">
+                        @hall.Id
+                    </div>
+                }
+                </td>
+                @foreach (DayOfWeek Day in Model.DayIterator)
+                {
+                    <td class="data_col" id="@Day.ToString()"></td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</p>
