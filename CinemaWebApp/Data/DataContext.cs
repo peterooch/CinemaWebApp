@@ -48,7 +48,7 @@ namespace CinemaWebApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Screening>()
-                .HasKey(s => new { s.Hall.Id, s.StartTime });
+                .HasKey(s => new { s.HallID, s.StartTime });
             modelBuilder.Entity<User>()
                 .HasAlternateKey(u => u.Email);
         }

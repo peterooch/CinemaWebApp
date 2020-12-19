@@ -7,9 +7,6 @@ namespace CinemaWebApp.Models
 {
     public class ScreeningsBag
     {
-        /* Static utility properties */
-        private static readonly TimeSpan week = new TimeSpan(7, 0, 0, 0);
-
         private readonly Dictionary<DayOfWeek, IEnumerable<Screening>> screenings_by_day = new Dictionary<DayOfWeek, IEnumerable<Screening>>();
         public IEnumerable<Hall> Halls { get; }
         public string SelectedHall { get; }
@@ -21,8 +18,8 @@ namespace CinemaWebApp.Models
             DateTime first_date = screenings.Min(s => s.StartTime);
             DateTime last_date  = screenings.Max(s => s.StartTime);
 
-            if (last_date - first_date > week)
-                throw new Exception("Range of days is bigger than a week");
+            if (last_date - first_date > Screening.Week)
+                throw new Exception("Range of items is bigger than a week");
 
             foreach (DayOfWeek day in DayIterator)
                 screenings_by_day[day] = screenings.Where(s => s.StartTime.DayOfWeek == day).OrderBy(s => s.StartTime);

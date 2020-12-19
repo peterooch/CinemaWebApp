@@ -1,6 +1,6 @@
 @model CinemaWebApp.Models.ScreeningsBag
 @{
-    ViewData["Title"] = "Weekly Schedule";
+    ViewData["Title"] = $"Weekly Schedule {ViewData["weekstart"]}";
 }
 <p>
     <table class="table" style="text-align: center;">
@@ -17,13 +17,21 @@
                 @foreach (Hall hall in Model.Halls)
                 {
                     <div style="background-color: @((hall.Id == Model.SelectedHall) ? "blue" : "white");">
-                        @hall.Id
+                        <a href="/Schedule/Index?weekstart=@ViewData["weekstart"]&hall=@hall.Id">@hall.Id</a>
                     </div>
                 }
                 </td>
                 @foreach (DayOfWeek Day in Model.DayIterator)
                 {
-                    <td class="data_col" id="@Day.ToString()"></td>
+                    <td class="data_col" id="@Day.ToString()">
+                        @foreach (Screening screening in Model[Day])
+                        {
+                            <div>
+                                @screening.StartTime.ToString("HH:mm") - @screening.EndTime.ToString("HH:mm") <br/>
+                                @screening.Movie.Name
+                            </div>
+                        }
+                    </td>
                 }
             </tr>
         </tbody>
