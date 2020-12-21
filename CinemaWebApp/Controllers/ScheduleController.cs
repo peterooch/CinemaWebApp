@@ -1,6 +1,7 @@
 ﻿using CinemaWebApp.Data;
 using CinemaWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,11 @@ namespace CinemaWebApp.Controllers
         }
 #nullable enable
         public IActionResult Index(string? weekstart, string? hall)
+#nullable disable
         {
-            DateTime sunday;
-
-            if (weekstart != null)
-            { 
-                sunday = DateTime.Parse(weekstart);
-            }
-            else
-            {
-                sunday = DateTime.Now.Date;
-                sunday = sunday.AddDays(-(int)sunday.DayOfWeek);
-            }
+            DateTime sunday = (weekstart != null) ? DateTime.Parse(weekstart) : DateTime.Now.Date;
+            sunday = sunday.AddDays(-(int)sunday.DayOfWeek);
+            ViewData["weekstart"] = sunday.ToString("dd-MM-yyyy");
 
             IEnumerable<Hall> halls = context.Halls;
             string selected_hall;
@@ -40,25 +34,16 @@ namespace CinemaWebApp.Controllers
             }
             else
             {
-                selected_hall = halls.First().Id;
+                selected_hall = halls.First().Id; 
             }
 
-            IEnumerable<Screening> weekly_screenings = context.Screenings.Where(s => Fits(s, selected_hall, sunday));
+            IQueryable<Screening> weekly_screenings = context.Screenings
+                .Where(s => s.HallID == selected_hall && s.StartTime >= sunday && s.StartTime < (sunday + Screening.Week))
+                .Include(s => s.Movie); // IMPORTANT!
 
             ScreeningsBag model = new ScreeningsBag(weekly_screenings, halls, selected_hall);
 
-            ViewData["weekstart"] = sunday.ToString("dd-MM-yyyy");
             return View(model);
-        }
-        private static bool Fits(Screening s, string hall, DateTime sunday)
-        {
-            if (s.HallID != hall)
-                return false;
-
-            if (s.StartTime < sunday || s.StartTime >= (sunday + Screening.Week))
-                return false;
-
-            return true;
         }
     }
 }

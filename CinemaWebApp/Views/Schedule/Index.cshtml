@@ -1,23 +1,41 @@
 @model CinemaWebApp.Models.ScreeningsBag
 @{
-    ViewData["Title"] = $"Weekly Schedule {ViewData["weekstart"]}";
+    string weekstart = @ViewData["weekstart"] as string;
+    ViewData["Title"] = $"Weekly Schedule {weekstart}";
+    DateTime start = DateTime.Parse(weekstart);
+    string prevweek = start.AddDays(-7).ToString("dd-MM-yyyy");
+    string nextweek = start.AddDays(7).ToString("dd-MM-yyyy");
 }
 <p>
     <table class="table" style="text-align: center;">
         <thead>
+            <th>
+                <a style="white-space: nowrap;" href="~/Schedule/Index?weekstart=@prevweek&hall=@Model.SelectedHall">
+                    &lt;&lt; Previous Week
+                </a>
+            </th>
             <th scope="col">Hall</th>
             @foreach (DayOfWeek Day in Model.DayIterator)
             {
-                <th>@Day.ToString()</th>
+                <th>@Day.ToString()<br />
+                    @start.AddDays((int)Day).ToString("dd-MM-yyyy")
+                </th>
             }
+            <th>
+                <a style="white-space: nowrap;" href="~/Schedule/Index?weekstart=@nextweek&hall=@Model.SelectedHall">
+                    Next Week &gt;&gt;
+                </a>
+            </th>
         </thead>
         <tbody>
             <tr id="flexboxes">
+                <td>@prevweek</td>
                 <td class="data_col" textid="Hall">
                 @foreach (Hall hall in Model.Halls)
                 {
-                    <div style="background-color: @((hall.Id == Model.SelectedHall) ? "blue" : "white");">
-                        <a href="/Schedule/Index?weekstart=@ViewData["weekstart"]&hall=@hall.Id">@hall.Id</a>
+                    <div style="background-color: @(hall.Id == Model.SelectedHall ? "cyan" : "white");">
+                        <a href="~/Schedule/Index?weekstart=@weekstart&hall=@hall.Id">@hall.Id</a>
+                        <hr />
                     </div>
                 }
                 </td>
@@ -27,12 +45,14 @@
                         @foreach (Screening screening in Model[Day])
                         {
                             <div>
-                                @screening.StartTime.ToString("HH:mm") - @screening.EndTime.ToString("HH:mm") <br/>
+                                @screening.StartTime.ToString("HH:mm") - @screening.EndTime.ToString("HH:mm") <br />
                                 @screening.Movie.Name
+                                <hr />
                             </div>
                         }
                     </td>
                 }
+                <td>@nextweek</td>
             </tr>
         </tbody>
     </table>

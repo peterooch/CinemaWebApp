@@ -20,6 +20,7 @@ namespace CinemaWebApp.Controllers
 
         public IActionResult Index()
         {
+            SeedData.Init(context);
             return View();
         }
 

@@ -7,24 +7,31 @@ namespace CinemaWebApp.Models
 {
     public class ScreeningsBag
     {
-        private readonly Dictionary<DayOfWeek, IEnumerable<Screening>> screenings_by_day = new Dictionary<DayOfWeek, IEnumerable<Screening>>();
+        private readonly Dictionary<DayOfWeek, IQueryable<Screening>> screenings_by_day = new Dictionary<DayOfWeek, IQueryable<Screening>>();
         public IEnumerable<Hall> Halls { get; }
         public string SelectedHall { get; }
-        public ScreeningsBag(IEnumerable<Screening> screenings, IEnumerable<Hall> halls, string selected_hall)
+        public ScreeningsBag(IQueryable<Screening> screenings, IEnumerable<Hall> halls, string selected_hall)
         {
             Halls = halls;
             SelectedHall = selected_hall;
 
-            DateTime first_date = screenings.Min(s => s.StartTime);
-            DateTime last_date  = screenings.Max(s => s.StartTime);
+            if (screenings.Any())
+            {
+                DateTime first_date = screenings.Min(s => s.StartTime);
+                DateTime last_date  = screenings.Max(s => s.StartTime);
 
-            if (last_date - first_date > Screening.Week)
-                throw new Exception("Range of items is bigger than a week");
+                if (last_date - first_date > Screening.Week)
+                    throw new Exception("Range of items is bigger than a week");
+            }
 
             foreach (DayOfWeek day in DayIterator)
-                screenings_by_day[day] = screenings.Where(s => s.StartTime.DayOfWeek == day).OrderBy(s => s.StartTime);
+            {
+                screenings_by_day[day] = screenings
+                    .Where(s => s.StartTime.DayOfWeek == day)
+                    .OrderBy(s => s.StartTime);
+            }
         }
-        public IEnumerable<Screening> this[DayOfWeek day]
+        public IQueryable<Screening> this[DayOfWeek day]
         {
             get 
             {

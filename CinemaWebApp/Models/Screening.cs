@@ -9,10 +9,9 @@ namespace CinemaWebApp.Models
         public string HallID { get; set; }
         public Movie Movie { get; set; }
         public DateTime StartTime { get; set; }
-        public TimeSpan Duration { get; set; }
         public List<Ticket> Taken { get; set; }
         [NotMapped]
-        public DateTime EndTime { get => StartTime + Duration; }
+        public DateTime EndTime { get => StartTime + Movie.Duration; }
         /* Static utility properties */
         [NotMapped]
         public static readonly TimeSpan Week = new TimeSpan(7, 0, 0, 0);

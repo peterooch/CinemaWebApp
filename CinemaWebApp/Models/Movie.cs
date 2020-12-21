@@ -16,6 +16,17 @@ namespace CinemaWebApp.Models
         public int MinAge { get; set; }
         public string Category { get; set; }
 
+        public Movie() { }
+
+        public Movie(string Name, string Category, double Price, TimeSpan Duration, int MinAge = 0, int Discount = 0)
+        {
+            this.Name     = Name;
+            this.Category = Category;
+            this.Price    = Price;
+            this.Duration = Duration;
+            this.MinAge   = MinAge;
+            this.Discount = Discount;
+        }
         public double TicketCost()
         {
             return CalcPrice(1);
