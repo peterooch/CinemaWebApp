@@ -25,6 +25,14 @@
         .walk {
             padding-left: 20px;
         }
+        div.absolute {
+            position: absolute;
+            /* top: 80px; */
+            right: 5%;
+            width: 200px;
+            height: 100px;
+            border: 3px solid black;
+        }
     </style>
 
 
@@ -32,40 +40,41 @@
 </head>
 <body>
 
+    <div class="absolute">This div element has position: absolute;</div>
     <div style="border:1px solid gray; width:500px;" class="center">
         <table>
             <thead>
                 @for (int i = 0; i <= 11; i++)
                 {
-                    if (i==0)
+                    if (i == 0)
                     {
-                        <th></th>
-                    }
-                    else
-                    {
-                        <th>@i</th>
-                    }
+                    <th></th>
                 }
-            </thead>
+                else
+                {
+                    <th>@i</th>
+                }
+            }
+                </thead>
                 @for (int i = 0; i <= 10; i++)
                 {
-            <tr>
-                <th>@alphabet[i]</th>
-                @for (int j = 0; j <= 10; j++)
-                {
-                    <td><div class="seat"> &#x1f4ba;</div></td>
+                    <tr>
+                        <th>@alphabet[i]</th>
+                        @for (int j = 0; j <= 10; j++)
+                        {
+                            <td><div class="seat"> &#x1f4ba;</div></td>
+                        }
+                    </tr>
                 }
-            </tr>
-                }
-            <!--<tr>
+                <!--<tr>
                 <td><div class="seat"></div> </td>
                 <td><div class="seat"></div></td>
                 <td class="walk">  </td>
                 <td><div class="seat"></div></td>
                 <td><div class="seat"></div></td>
             </tr>-->
-        </table>
-    </div>
+            </table>
+        </div>
 
 
     <script>
