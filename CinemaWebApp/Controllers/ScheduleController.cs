@@ -21,6 +21,8 @@ namespace CinemaWebApp.Controllers
         public IActionResult Index(string? weekstart, string? hall)
 #nullable disable
         {
+            this.GetViewData();
+
             DateTime sunday = (weekstart != null) ? DateTime.Parse(weekstart) : DateTime.Now.Date;
             sunday = sunday.AddDays(-(int)sunday.DayOfWeek);
             ViewData["weekstart"] = sunday.ToString("dd-MM-yyyy");

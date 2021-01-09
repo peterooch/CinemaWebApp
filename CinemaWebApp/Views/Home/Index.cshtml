@@ -1,9 +1,11 @@
-﻿@{
+﻿@model CinemaWebApp.Models.HomeVM
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Styles"] = new string[] { "/css/home.css" };
 }
 
-<div id="navbar">
+<div>
+    <!--
     <div class="btn-group">
         <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -11,10 +13,19 @@
             Select movie
         </button>
         <div class="dropdown-menu">
-            ...
         </div>
+    </div> -->
+    <div>
+        <label for="movies">
+            &#x1f3a5; Select movie:
+        </label><br/>
+        <select name="movies" id="movies">
+            @foreach (string movie in Model.movies)
+            {
+                <option value="@movie">@movie</option>
+            }
+        </select>
     </div>
-
     <div class="btn-group">
         <div id="datepicker" class="btn btn-secondary btn-lg" aria-haspopup="true" aria-expanded="false">
             &#x1f4c5;&#x23f1;
@@ -25,9 +36,7 @@
     <button type="button" class="btn btn-secondary btn-lg">
         Buy tickets
     </button>
-
 </div>
-
 
 <script>
     window.onscroll = function () { myFunction() };

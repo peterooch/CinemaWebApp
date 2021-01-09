@@ -26,8 +26,9 @@ namespace CinemaWebApp
         {
             services.AddDbContext<DataContext>(options =>
                     DataContext.GetOptions(options, Configuration));
-
+            services.AddDataProtection();
             services.AddControllersWithViews();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +48,7 @@ namespace CinemaWebApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

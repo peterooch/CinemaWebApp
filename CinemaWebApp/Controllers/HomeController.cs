@@ -7,21 +7,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CinemaWebApp.Models;
 using CinemaWebApp.Data;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace CinemaWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly DataContext context;
-        public HomeController(DataContext context)
+        private readonly IDataProtector protector;
+        public HomeController(DataContext context, IDataProtectionProvider provider)
         {
             this.context = context;
+            SeedData.Init(context);
+            protector = provider.SetCookieProtector();
         }
 
         public IActionResult Index()
         {
-            SeedData.Init(context);
-            return View();
+            if (HttpContext.Request.Cookies.TryGetValue(ExtensionMethods.UserCookie, out string cookie))
+            {
+                string email = protector.Unprotect(cookie);
+
+                User user = context.Users.FirstOrDefault(u => u.Email == email);
+
+                if (user != null)
+                    this.SetViewData(user);
+            }
+            HomeVM model = new HomeVM
+            {
+                movies = context.Movies.Select(m => m.Name).ToList()
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()
