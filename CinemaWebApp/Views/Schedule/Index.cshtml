@@ -26,6 +26,7 @@
                     Next Week &gt;&gt;
                 </a>
             </th>
+
         </thead>
         <tbody>
             <tr id="flexboxes">
@@ -44,9 +45,10 @@
                     <td class="data_col" id="@Day.ToString()">
                         @foreach (Screening screening in Model[Day])
                         {
-                            <div>
+                            <div><a href="~/Hall/Index?hall=@Model.SelectedHall&&time=@screening.StartTime.ToString("ddMMyyyy-HHmm")">
                                 @screening.StartTime.ToString("HH:mm") - @screening.EndTime.ToString("HH:mm") <br />
                                 @screening.Movie.Name
+                                </a>
                                 <hr />
                             </div>
                         }

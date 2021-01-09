@@ -1,7 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@model CinemaWebApp.Models.HallVM
 @{ 
     char[] alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z' };
+    int seats = (int)ViewData["seats"];
 }
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -33,6 +35,11 @@
             height: 100px;
             border: 3px solid black;
         }
+        .Buytickets {
+            margin: 0;
+            align-content:flex-end;
+            top: 75%;
+        }
     </style>
 
 
@@ -44,51 +51,65 @@
     <div style="border:1px solid gray; width:500px;" class="center">
         <table>
             <thead>
-                @for (int i = 0; i <= 11; i++)
-                {
-                    if (i == 0)
-                    {
-                    <th></th>
-                }
-                else
-                {
-                    <th>@i</th>
-                }
+            <th></th>
+            @for (int i = 1; i <= 10; i++)
+            {
+                <th>@i</th>
+
             }
-                </thead>
-                @for (int i = 0; i <= 10; i++)
-                {
-                    <tr>
-                        <th>@alphabet[i]</th>
-                        @for (int j = 0; j <= 10; j++)
+            </thead>
+            @for (int i = 0; i <= seats; i++)
+            {
+                <tr>
+                    <th>@alphabet[i / 10]</th>
+                    @for (int j = 0; j < 10; j++, i++)
+                    {
+                        @if (Model.seats.Contains(i))
+                        {
+                            <td><div class="seat" style="background-color: red;"> &#x1f4ba;</div></td>
+                        }
+                        else
                         {
                             <td><div class="seat"> &#x1f4ba;</div></td>
                         }
-                    </tr>
-                }
-                <!--<tr>
-                <td><div class="seat"></div> </td>
-                <td><div class="seat"></div></td>
-                <td class="walk">  </td>
-                <td><div class="seat"></div></td>
-                <td><div class="seat"></div></td>
-            </tr>-->
-            </table>
-        </div>
+                    }
+                </tr>
+            }
+            <!--<tr>
+            <td><div class="seat"></div> </td>
+            <td><div class="seat"></div></td>
+            <td class="walk">  </td>
+            <td><div class="seat"></div></td>
+            <td><div class="seat"></div></td>
+        </tr>-->
+        </table>
+        <button class="Buytickets" onclick="buy_tickets();">
+            Buy Ticket
+        </button>
+    </div>
 
 
     <script>
-
+        var movie = @Model.movie;
+        var hall = @Model.hall;
+        var @Model.
+        function buy_tickets() {
+            var seats = document.querySelectorAll(".seat");
+            var seat_idx = [];
+            for (var i = 0; i < seats.length; i++) {
+                if (seats[i].style.backgroundColor == 'yellow')
+                    seat_idx.push(i);
+            }
+            
+        }
         allSeats = document.querySelectorAll('.seat');
         for (var i = 0; i < allSeats.length; i++) {
             var seat = allSeats[i];
             seat.addEventListener('click', function () {
                 var bgclr = this.style.backgroundColor;
-                if(bgclr =='red')
-                    this.style.backgroundColor = 'white'
-                else
-                    this.style.backgroundColor = 'red'
-                debugger
+                if (bgclr != 'red' && bgclr != 'yellow') {
+                    this.style.backgroundColor = 'yellow';
+                }
             }, false);
         }
 
