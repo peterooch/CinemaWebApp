@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CinemaWebApp.Controllers
 {
@@ -15,11 +16,19 @@ namespace CinemaWebApp.Controllers
         {
             this.context = context;
         }
-        [HttpPost]
-        public IActionResult Index(string model)
+        private class Order
         {
-            
-            return View();
+            public string Movie { get; set; }
+            public string Hall { get; set; }
+            public string Start { get; set; }
+            public List<int> Seats { get; set; }
+        }
+        [HttpPost]
+        public string AddOrder()
+        {
+            Order order = JsonSerializer.Deserialize<Order>(Request.Form["Model"]);
+
+            return "OK";
         }
     }
 }
