@@ -24,7 +24,7 @@ namespace CinemaWebApp.Controllers
             {
                 //error
             }
-            DateTime td = DateTime.ParseExact(time, "ddMMyyyy-HHmm", CultureInfo.InvariantCulture);
+            DateTime td = DateTime.ParseExact(time, Screening.Format, CultureInfo.InvariantCulture);
             Screening screening = context.Screenings.Include(s => s.Movie).Include(s => s.Taken).FirstOrDefault();
 
             if (screening is null)

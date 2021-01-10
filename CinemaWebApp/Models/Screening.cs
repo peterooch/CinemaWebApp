@@ -6,6 +6,7 @@ namespace CinemaWebApp.Models
 {
     public class Screening : IComparable<Screening>
     {
+        public const string Format = "ddMMyyyy-HHmm";
         public string HallID { get; set; }
         public Movie Movie { get; set; }
         public DateTime StartTime { get; set; }

@@ -45,7 +45,7 @@
                     <td class="data_col" id="@Day.ToString()">
                         @foreach (Screening screening in Model[Day])
                         {
-                            <div><a href="~/Hall/Index?hall=@Model.SelectedHall&&time=@screening.StartTime.ToString("ddMMyyyy-HHmm")">
+                            <div><a href="~/Hall/Index?hall=@Model.SelectedHall&&time=@screening.StartTime.ToString(Screening.Format)">
                                 @screening.StartTime.ToString("HH:mm") - @screening.EndTime.ToString("HH:mm") <br />
                                 @screening.Movie.Name
                                 </a>

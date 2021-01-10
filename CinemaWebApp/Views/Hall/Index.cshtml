@@ -90,9 +90,8 @@
 
 
     <script>
-        var movie = "@Model.movie";
         var hall = "@Model.hall";
-        var start = "@Model.start";
+        var start = "@Model.start.ToString(Screening.Format)";
         function buy_tickets() {
             var seats = document.querySelectorAll(".seat");
             var seat_idx = [];
@@ -100,12 +99,13 @@
                 if (seats[i].style.backgroundColor == 'yellow')
                     seat_idx.push(i);
             }
-            var order = { Movie: movie, Hall: hall, Start: start, Seats: seat_idx };
+            var order = { Hall: hall, Start: start, Seats: seat_idx };
             var message = new XMLHttpRequest();
             message.open("POST", "/Purchase/AddOrder");
             message.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             message.onreadystatechange = function () {
                 if (this.readyState == this.DONE && this.status == 200) {
+                    window.location.replace(this.responseText);
                 }
             }
             message.send("Model="+JSON.stringify(order));
