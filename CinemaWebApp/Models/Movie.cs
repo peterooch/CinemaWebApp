@@ -15,6 +15,7 @@ namespace CinemaWebApp.Models
         public int Discount { get; set; }
         public int MinAge { get; set; }
         public string Category { get; set; }
+        public string Image { get; set; }
 
         public Movie() { }
 

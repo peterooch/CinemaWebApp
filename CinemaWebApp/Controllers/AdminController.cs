@@ -15,17 +15,29 @@ namespace CinemaWebApp.Controllers
         {
             this.context = context;
         }
-        public IActionResult ManageScreenings(string hall, string time)
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Movies()
+        {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
+            return View();
+        }
+        public IActionResult AddMovie()
+        {
+            return View();
+        }
+        public IActionResult Screenings()
         {
             if (!this.IsAdmin(context))
                 return RedirectToAction("Index", "Home");
             return View();
         }
-        public IActionResult ManageMovies(string name)
+        public IActionResult AddScreening()
         {
-            if (!this.IsAdmin(context))
-                return RedirectToAction("Index", "Home");
-
             return View();
         }
         public IActionResult Halls()

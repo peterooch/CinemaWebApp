@@ -17,6 +17,7 @@ namespace CinemaWebApp.Controllers
         public static void GetViewData(this Controller controller)
         {
             controller.ViewData[fstr] = controller.HttpContext.Session.GetString(fstr);
+            controller.ViewData["IsAdmin"] = controller.HttpContext.Session.GetInt32("IsAdmin") == 1;
         }
         public static void SetViewData(this Controller controller, User user)
         {
@@ -50,9 +51,9 @@ namespace CinemaWebApp.Controllers
 
             if (admin is null)
                 return false;
-
-            controller.HttpContext.Session.SetInt32("IsAdmin", 1);
 #endif
+            controller.HttpContext.Session.SetInt32("IsAdmin", 1);
+            controller.GetViewData();
             return true;
         }
     }

@@ -22,6 +22,18 @@ namespace CinemaWebApp.Data
             if (!context.Halls.Any())
                 context.Halls.AddRange(halls);
 
+            if (!context.Admins.Any())
+            {
+                Admin admin = new Admin
+                {
+                    Email = "admin@localhost",
+                    FirstName = "Admin",
+                    LastName = "Adminov",
+                };
+                admin.StorePassword("admin");
+                context.Admins.Add(admin);
+            }
+
             DateTime current_week_start = DateTime.Now.Date.AddDays(-(int)DateTime.Now.DayOfWeek);
 
             List<Movie> the_movies = new List<Movie>()
