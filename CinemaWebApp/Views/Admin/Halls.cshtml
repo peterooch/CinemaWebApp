@@ -1,0 +1,19 @@
+﻿@model IQueryable<Hall>
+@{
+    ViewData["Title"] = "Hall gallery";
+}
+
+<p>
+    Please select a hall to manage:
+</p>
+<div class="btn-group-lg">
+@foreach (Hall hall in Model)
+{
+    <a class="btn btn-primary" href="/Admin/ManageHall?hallId=@hall.Id">@hall.Id</a> 
+}
+</div>
+<div>
+    <br/>
+    <a class="btn btn-success" href="/Admin/ManageHall">Add new hall</a>
+    <br/>
+</div>
