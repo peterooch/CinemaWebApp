@@ -1,0 +1,25 @@
+﻿@model NewScreeningVM
+@{
+    ViewData["Title"] = "Add New Screening";
+}
+<form action="/Admin/AddScreening" method="post">
+    <label for="MovieName">Movie:</label><br/>
+    <select class="form-control" name="MovieName">
+        @foreach (Movie movie in Model.movies)
+        {
+            <option value="@movie">@movie</option>
+        }
+    </select><br/>
+    <label for="Hall">Hall:</label><br/>
+    <select class="form-control" name="Hall">
+        @foreach (Hall hall in Model.halls)
+        {
+            <option value="@hall">@hall</option>
+        }
+    </select><br/>
+    <label for="StartDay">Day:</label><br/>
+    <input class="form-control" type="date" name="StartDay" required /><br/>
+    <label for="StartHour">Hour:</label>
+    <input class="form-control" type="time" name="StartHour" required /><br/>
+    <input class="btn btn-primary" type="submit" value="Add Screening" />
+</form>

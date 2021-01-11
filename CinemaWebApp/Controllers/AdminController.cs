@@ -1,7 +1,9 @@
 ﻿using CinemaWebApp.Data;
 using CinemaWebApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,21 +26,80 @@ namespace CinemaWebApp.Controllers
             if (!this.IsAdmin(context))
                 return RedirectToAction("Index", "Home");
 
-            return View();
+            return View(context.Movies);
         }
-        public IActionResult AddMovie()
+        public IActionResult EditMovie(string name)
         {
-            return View();
+            bool exists = context.Movies.Any(m => m.Name == name);
+            ViewData["NewMovie"] = !exists;
+
+            if (exists)
+                return View(context.Movies.Find(name));
+
+            Movie model = new Movie
+            {
+                Name = "New Movie",
+                Price = 39.90,
+                Category = "Action",
+                Discount = 0,
+                Duration = new TimeSpan(1, 30, 0),
+                MinAge = 0
+            };
+            return View(model);
         }
-        public IActionResult Screenings()
+        public class MovieForm
         {
-            if (!this.IsAdmin(context))
-                return RedirectToAction("Index", "Home");
-            return View();
+            public string Name { get; set; }
+            public TimeSpan Duration { get; set; }
+            public double Price { get; set; }
+            public int MinAge { get; set; }
+            public string Category { get; set; }
+            public int Discount { get; set; }
+            public IFormFile Poster { get; set; }
         }
-        public IActionResult AddScreening()
+        [HttpPost]
+        public IActionResult UpdateMovie([FromForm]MovieForm form)
         {
-            return View();
+
+            Movie movie = new Movie
+            {
+                Name     = form.Name,
+                Duration = form.Duration,
+                Price    = form.Price,
+                MinAge   = form.MinAge,
+                Category = form.Category,
+                Discount = form.Discount
+            };
+
+            if (context.Movies.Any(m => m.Name == form.Name))
+                context.Update(movie);
+            else
+                context.Add(movie);
+
+            context.SaveChanges();
+            
+            if (form.Poster != null)
+            {
+                string dest_path = $"wwwroot/PIC/{movie.Name}.jpg";
+
+                if (System.IO.File.Exists(dest_path))
+                    System.IO.File.Delete(dest_path);
+
+                using FileStream destStream = System.IO.File.OpenWrite(dest_path);
+                using Stream srcStream = form.Poster.OpenReadStream();
+
+                srcStream.CopyTo(destStream);
+            }
+            return RedirectToAction("Movies");
+        }
+        public IActionResult NewScreening()
+        {
+            NewScreeningVM viewmodel = new NewScreeningVM
+            {
+                movies = context.Movies,
+                halls = context.Halls
+            };
+            return View(viewmodel);
         }
         public IActionResult Halls()
         {

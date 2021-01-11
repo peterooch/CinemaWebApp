@@ -11,5 +11,10 @@ namespace CinemaWebApp.Models
         [Key]
         public string Id { get; set; }
         public int Seats { get; set; }
+
+        public override string ToString()
+        {
+            return Id;
+        }
     }
 }

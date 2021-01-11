@@ -1,0 +1,18 @@
+﻿@model IQueryable<Movie> 
+@{
+    ViewData["Title"] = "Movie list";
+}
+
+<div>
+    <a class="btn btn-primary" href="/Admin/EditMovie">Add new Movie</a>
+</div>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+@foreach(Movie movie in Model)
+{
+    <div>
+        <img src="~/PIC/@(movie.Name).jpg" style="width:250px; height:400px;"/><br/>
+        @movie.Name<br/>
+        <a href="/Admin/EditMovie?name=@movie.Name">Edit Details</a>
+    </div>
+}
+</div>

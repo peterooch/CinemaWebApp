@@ -35,5 +35,9 @@ namespace CinemaWebApp.Models
         {
             return (Price * (Discount / 100)) * ticket_count;
         }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
