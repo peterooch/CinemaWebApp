@@ -3,3 +3,32 @@
     ViewData["Title"] = "Home Page";
     ViewData["Styles"] = new string[] { "/css/home.css" };
 }
+<nav>
+    <form action="/">
+        Categories
+        <select name="cat">
+            @foreach (string c in Model.categories)
+            {
+                <option value="@c">
+                    @c
+                </option>
+            }
+        </select>
+        Ages
+        <select name="age">
+            @foreach (int a in Model.ages)
+            {
+                <option value="@a">
+                    @a
+                </option>
+            }
+        </select>
+        <input type="submit" value="filter">
+
+    </form>
+</nav>
+@foreach (Movie movie in Model.movies)
+{
+    <img style="margin:10px" class="padded" src="~/PIC/@(movie.Name).jpg" width="180" height="180">
+}
+

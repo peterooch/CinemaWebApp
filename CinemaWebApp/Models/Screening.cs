@@ -39,6 +39,9 @@ namespace CinemaWebApp.Models
         }
         public static bool operator ==(Screening lhs, Screening rhs) => lhs.Equals(rhs);
         public static bool operator !=(Screening lhs, Screening rhs) => !lhs.Equals(rhs);
-        public override int GetHashCode() => base.GetHashCode();
+        public override int GetHashCode()
+        {
+            return HallID.GetHashCode() ^ StartTime.GetHashCode(); 
+        }
     }
 }

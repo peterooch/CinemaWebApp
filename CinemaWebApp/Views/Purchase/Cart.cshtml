@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Dictionary<Screening, int>
 @{
+    ViewData["Title"] = "Cart";
+    ViewData["Styles"] = new string[] { "/css/Cart.css" };
 }
+
+<h2>Your cart:</h2>
+
+<table style="width:100%">
+    <tr>
+        <th>Movie</th>
+        <th>Date</th>
+        <th>Hall</th>
+        <th>Number of tickets</th>
+        <th>Price per ticket</th>
+    </tr>
+    @foreach (var pair in Model)
+    {
+        <tr>
+            <td>@pair.Key.Movie.Name</td>
+            <td>@pair.Key.StartTime</td>
+            <td>@pair.Key.HallID</td>
+            <td>@pair.Value</td>
+            <td>@pair.Key.Movie.Price</td>
+        </tr>
+    }
+</table>
+<label for="total">Total price:</label>
+<input type="text" id="totalprice" name="totalprice" value="@(((double)ViewData["Total"]).ToString("N1"))" disabled="disabled"><br><br>
+<button style="position:static" class="confirmBT">
+    Check out
+</button>
+

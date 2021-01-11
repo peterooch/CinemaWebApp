@@ -7,6 +7,8 @@ namespace CinemaWebApp.Models
 {
     public class HomeVM
     {
-        public List<string> movies;
+        public IEnumerable<Movie> movies;
+        public IEnumerable<string> categories;
+        public List<int> ages;
     }
 }

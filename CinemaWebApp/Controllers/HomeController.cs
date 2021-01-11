@@ -22,7 +22,7 @@ namespace CinemaWebApp.Controllers
             protector = provider.SetCookieProtector();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string cat, string age = "0")
         {
             if (HttpContext.Request.Cookies.TryGetValue(ExtensionMethods.UserCookie, out string cookie))
             {
@@ -33,10 +33,20 @@ namespace CinemaWebApp.Controllers
                 if (user != null)
                     this.SetViewData(user);
             }
+
+            if (!uint.TryParse(age, out uint i_age))
+                i_age = 0;
+            IQueryable<Movie> movies = context.Movies.Where(m => m.MinAge >= i_age);
+            if (movies.Any(m => m.Category == cat))
+                movies = movies.Where(m => m.Category == cat);
+
             HomeVM model = new HomeVM
             {
-                movies = context.Movies.Select(m => m.Name).ToList()
+                movies = movies,
+                categories = context.Movies.Select(m => m.Category).Distinct(),
+                ages = context.Movies.Select(a => a.MinAge).Distinct().ToList()
             };
+            model.ages.Sort();
             return View(model);
         }
 

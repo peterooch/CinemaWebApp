@@ -60,5 +60,25 @@ namespace CinemaWebApp.Controllers
         {
             return View();
         }
+        public IActionResult Cart()
+        {
+            Dictionary<Screening, int> model = new Dictionary<Screening, int>();
+            int? ordid = HttpContext.Session.GetInt32("CurrentOrder");
+            TicketOrder order = context.TicketOrders
+                .Include(o => o.Tickets)
+                .ThenInclude(t=> t.Screening)
+                .ThenInclude(s => s.Movie)
+                .FirstOrDefault(o => o.ID == ordid);
+            if (order != null)
+            {
+                foreach (Screening s in order.Tickets.Select(t => t.Screening).Distinct())
+                    model[s] = 0;
+                foreach (Ticket t in order.Tickets)
+                    model[t.Screening] += 1;
+            }
+
+            ViewData["Total"] = (order != null) ? order.Total:0;
+            return View(model);
+        }
     }
 }

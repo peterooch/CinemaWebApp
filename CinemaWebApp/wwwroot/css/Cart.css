@@ -1,0 +1,16 @@
+﻿body {
+}
+table, th, td {
+    border: 1px solid black;
+}
+
+.confirmBT {
+    position: relative;
+    bottom: 0;
+    right: 0;
+}
+
+.total {
+    margin-left: 75%;
+    margin-top: 60%;
+}

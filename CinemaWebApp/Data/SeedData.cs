@@ -32,6 +32,7 @@ namespace CinemaWebApp.Data
                 };
                 admin.StorePassword("admin");
                 context.Admins.Add(admin);
+                context.SaveChanges();
             }
 
             DateTime current_week_start = DateTime.Now.Date.AddDays(-(int)DateTime.Now.DayOfWeek);
@@ -39,8 +40,20 @@ namespace CinemaWebApp.Data
             List<Movie> the_movies = new List<Movie>()
             {
                 new Movie("Spaceballs", "Comedy", 39.90, new TimeSpan(2,0,0), 10),
-                new Movie("Breakdance 2: Electric Boogaloo", "Comedy", 19.90, new TimeSpan(1,45,0)),
+                new Movie("Breakdance 2 Electric Boogaloo", "Comedy", 19.90, new TimeSpan(1,45,0)),
                 new Movie("The Big Lebowski", "Comedy", 24.90, new TimeSpan(1,50,0), 18),
+                new Movie("Mulan","Comedy",39.90,new TimeSpan(1,20,0),14),
+                new Movie("Bharat","Action",39.90,new TimeSpan(1,30,0),18),
+                new Movie("No time to die","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Rambo","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Tanet","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("The call of the wild","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Wonder woman","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("back to the future","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Black and blue","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Corona","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("Moonlight","Action",39.90,new TimeSpan(1,50,0),18),
+                new Movie("the old guard","Action",39.90,new TimeSpan(1,50,0),18)
                 /* Need to think about more! */
             };
 

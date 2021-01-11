@@ -22,14 +22,18 @@ namespace CinemaWebApp.Controllers
         {
             if (!context.Halls.Any(h => h.Id == hall))
             {
-                //error
+                return RedirectToAction("Index", "Home");
             }
             DateTime td = DateTime.ParseExact(time, Screening.Format, CultureInfo.InvariantCulture);
+            if (td <= DateTime.Now)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             Screening screening = context.Screenings.Include(s => s.Movie).Include(s => s.Taken).FirstOrDefault();
 
             if (screening is null)
             {
-                // error
+                return RedirectToAction("Index", "Home");
             }
             ViewData["seats"] = context.Halls.First(h => h.Id == hall).Seats;
             return View(new HallVM(screening));
