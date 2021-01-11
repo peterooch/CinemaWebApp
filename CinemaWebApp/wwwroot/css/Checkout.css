@@ -1,0 +1,38 @@
+﻿
+.row {
+    display: -ms-flexbox; 
+    display: flex;
+    -ms-flex-wrap: wrap; 
+    flex-wrap: wrap;
+    margin: 0 -16px;
+}
+
+.col-50 {
+    -ms-flex: 50%; 
+    flex: 50%;
+    padding: 0 16px;
+}
+
+input[type=text] {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.icon-container {
+    margin-bottom: 20px;
+    padding: 7px 0;
+    font-size: 24px;
+}
+
+span.price {
+    float: right;
+    color: grey;
+}
+

@@ -29,7 +29,10 @@ namespace CinemaWebApp.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            Screening screening = context.Screenings.Include(s => s.Movie).Include(s => s.Taken).FirstOrDefault();
+            Screening screening = context.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Taken)
+                .FirstOrDefault(s => s.HallID == hall && s.StartTime == td);
 
             if (screening is null)
             {
