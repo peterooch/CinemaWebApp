@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Controllers
 {
@@ -60,7 +61,6 @@ namespace CinemaWebApp.Controllers
         [HttpPost]
         public IActionResult UpdateMovie([FromForm]MovieForm form)
         {
-
             Movie movie = new Movie
             {
                 Name     = form.Name,
@@ -100,6 +100,41 @@ namespace CinemaWebApp.Controllers
                 halls = context.Halls
             };
             return View(viewmodel);
+        }
+        public class ScreeningForm
+        {
+            public string MovieName { get; set; }
+            public string Hall { get; set; }
+            public DateTime StartDay { get; set; }
+            public TimeSpan StartHour { get; set; }
+        }
+        [HttpPost]
+        public IActionResult AddScreening([FromForm]ScreeningForm form)
+        {
+            DateTime StartTime = form.StartDay + form.StartHour;
+            Movie movie = context.Movies.Find(form.MovieName);
+
+            if (movie == null || !context.Halls.Any(h => h.Id == form.Hall))
+                return RedirectToAction("Index");
+
+            Screening screening = new Screening
+            {
+                HallID = form.Hall,
+                Movie = movie,
+                StartTime = StartTime,
+            };
+            if (context.Screenings
+                .Where(s => s.HallID == screening.HallID && s.StartTime.Date == screening.StartTime.Date)
+                .Include(s => s.Movie)
+                .ToList()
+                .Any(s => s.Overlap(screening)))
+            {
+                return RedirectToAction("Index");
+            }
+            context.Screenings.Add(screening);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
         public IActionResult Halls()
         {
