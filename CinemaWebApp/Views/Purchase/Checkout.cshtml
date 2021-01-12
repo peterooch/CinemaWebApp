@@ -9,10 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
     <div class="row">
         <div class="container">
-            <form action="/action_page.php">
+            <form action="/Purchase/ThanksBuy" method="post">
                 <div class="row">
                     <div class="col-50">
                         <h3>Address</h3>
@@ -52,11 +51,10 @@
                         <p>Total <span class="price" style="color:black"><b>@(((double)ViewData["Total"]).ToString("N1"))"</b></span></p>
                     </div>
                 </div>
-                <input type="button" value="Pay with PayPal" />
-                <input type="button" value="Continue to checkout">
+                <input type="" value="Pay with PayPal" />
+                <input type="submit" value="Continue to checkout">
             </form>
         </div>
     </div>
-
 </body>
 </html>

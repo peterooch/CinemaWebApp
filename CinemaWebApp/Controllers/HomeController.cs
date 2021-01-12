@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using CinemaWebApp.Models;
 using CinemaWebApp.Data;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaWebApp.Controllers
 {
@@ -50,9 +51,12 @@ namespace CinemaWebApp.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Movie(string name)
         {
-            return View();
+            IQueryable<Screening> screenings = context.Screenings
+                .Include(s => s.Movie)
+                .Where(s => s.Movie.Name == name && s.StartTime >= DateTime.Now);
+            return View(screenings);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

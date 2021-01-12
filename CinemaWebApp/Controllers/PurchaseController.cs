@@ -96,5 +96,10 @@ namespace CinemaWebApp.Controllers
             ViewData["Total"] = (order != null) ? order.Total:0;
             return View(model);
         }
+
+        public IActionResult ThanksBuy()
+        {
+            return View();
+        }
     }
 }

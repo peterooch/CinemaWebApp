@@ -1,0 +1,24 @@
+﻿@model IQueryable<Screening>
+@{
+    ViewData["Styles"] = new string[] { "/css/Cart.css" };
+}
+
+<h2>Screening:</h2>
+<table style="width:100%">
+    <tr>
+        <th>Movie</th>
+        <th>Date</th>
+        <th>Hall</th>
+        <th></th>
+    </tr>
+    @foreach (Screening s in Model)
+    {
+        <tr>
+            <td>@s.Movie.Name</td>
+            <td>@s.StartTime</td>
+            <td>@s.HallID</td>
+            <td><a href="/Hall/Index?hall=@s.HallID&time=@s.StartTime.ToString(Screening.Format)">Buy ticket</a></td>
+        </tr>
+    }
+    <a class="btn btn-primary" href="/" role="button">Go back</a>
+</table>
