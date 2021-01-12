@@ -29,8 +29,8 @@
 </nav>
 @foreach (Movie movie in Model.movies)
 {
-<a href="/Home/Movie?name=@movie.Name">
-    <img style="margin:10px" class="padded" src="~/PIC/@(movie.Name).jpg" width="180" height="180">
+<a href="/Home/Movie?name=@movie">
+    <img style="margin:10px" class="padded" src="~/PIC/@(movie).jpg" width="180" height="180">
 </a>
 }
 

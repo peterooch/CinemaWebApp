@@ -5,7 +5,10 @@
 }
 
 <h2>Your cart:</h2>
-
+@if (ViewData["OrderID"] != null)
+{
+    <span>Order Number: @ViewData["OrderID"]</span>
+}
 <table style="width:100%">
     <tr>
         <th>Movie</th>
@@ -17,7 +20,7 @@
     @foreach (var pair in Model)
     {
         <tr>
-            <td>@pair.Key.Movie.Name</td>
+            <td>@pair.Key.Movie</td>
             <td>@pair.Key.StartTime</td>
             <td>@pair.Key.HallID</td>
             <td>@pair.Value</td>

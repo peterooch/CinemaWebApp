@@ -15,7 +15,6 @@ namespace CinemaWebApp.Controllers
     public class PurchaseController : Controller
     {
         private readonly DataContext context;
-
         public PurchaseController(DataContext context)
         {
             this.context = context;
@@ -31,35 +30,70 @@ namespace CinemaWebApp.Controllers
         {
             Order order = JsonSerializer.Deserialize<Order>(Request.Form["Model"]);
             DateTime start = DateTime.ParseExact(order.Start, Screening.Format, CultureInfo.InvariantCulture);
+            
             Screening screening = context.Screenings
                 .Include(s => s.Movie)
                 .First(s => s.HallID == order.Hall && s.StartTime == start);
 
             List<Ticket> tickets = order.Seats.Select(seat => new Ticket(screening, seat)).ToList();
-            TicketOrder ticket = new TicketOrder
-            {
-                Paid = false,
-                Total = tickets.Count * screening.Movie.Price,
-                Tickets = tickets,
-                Buyer = null
-            };
-            string dest = "/Purchase/Checkout";
+            int? current_order = HttpContext.Session.GetInt32("CurrentOrder");
+
+            TicketOrder ticketOrder;
+
             int? loggeduser = HttpContext.Session.GetInt32("UserID");
-            if (loggeduser != null)
+            User user = context.Users.Find(loggeduser);
+
+            var ticket_ctx = context.TicketOrders.Include(o => o.Buyer);
+            if (ticket_ctx.Any(o => o.Buyer.UserID == loggeduser && o.Paid == false))
             {
-                User user = context.Users.Find(loggeduser);
-                ticket.Buyer = user;
-                dest = "/Purchase/Cart";
+                ticketOrder = ticket_ctx
+                    .Include(to => to.Tickets)
+                    .First(to => to.Buyer.UserID == loggeduser);
+                ticketOrder.Tickets.AddRange(tickets);
+                ticketOrder.Total += screening.Movie.CalcPrice(tickets.Count);
+                context.TicketOrders.Update(ticketOrder);
             }
-            context.TicketOrders.Add(ticket);
+            else if (current_order != null) // Is this useless?
+            {
+                ticketOrder = ticket_ctx
+                    .Include(to => to.Tickets)
+                    .First(to => to.ID == current_order);
+                ticketOrder.Tickets.AddRange(tickets);
+                ticketOrder.Total += screening.Movie.CalcPrice(tickets.Count);
+                context.TicketOrders.Update(ticketOrder);
+            }
+            else
+            {
+                ticketOrder = new TicketOrder
+                {
+                    Paid = false,
+                    Total = screening.Movie.CalcPrice(tickets.Count),
+                    Tickets = tickets,
+                    Buyer = user
+                };
+                context.TicketOrders.Add(ticketOrder);
+            }
             context.SaveChanges();
-            HttpContext.Session.SetInt32("CurrentOrder", ticket.ID);
-            return dest;
+            HttpContext.Session.SetInt32("CurrentOrder", ticketOrder.ID);
+            return "/Purchase/Cart";
         }
-        public IActionResult Checkout()
+        private Dictionary<Screening, int> CurrentOrderDictionary()
         {
             Dictionary<Screening, int> model = new Dictionary<Screening, int>();
             int? ordid = HttpContext.Session.GetInt32("CurrentOrder");
+            int? uid = HttpContext.Session.GetInt32("UserID");
+            
+            if (ordid == null && uid != null)
+            {
+                TicketOrder t = context.TicketOrders
+                    .Include(to => to.Buyer)
+                    .FirstOrDefault(to => to.Buyer.UserID == uid && to.Paid == false);
+                if (t != null)
+                {
+                    HttpContext.Session.SetInt32("CurrentOrder", t.ID);
+                    ordid = t.ID;
+                }
+            }
             TicketOrder order = context.TicketOrders
                 .Include(o => o.Tickets)
                 .ThenInclude(t => t.Screening)
@@ -73,30 +107,20 @@ namespace CinemaWebApp.Controllers
                     model[t.Screening] += 1;
             }
 
-            ViewData["Total"] = (order != null) ? order.Total : 0;
-            return View(model);
+            ViewData["Total"] = order?.Total ?? 0.0;
+            ViewData["OrderID"] = order?.ID;
+            return model;
+        }
+        public IActionResult Checkout()
+        {
+            this.GetViewData();
+            return View(CurrentOrderDictionary());
         }
         public IActionResult Cart()
         {
-            Dictionary<Screening, int> model = new Dictionary<Screening, int>();
-            int? ordid = HttpContext.Session.GetInt32("CurrentOrder");
-            TicketOrder order = context.TicketOrders
-                .Include(o => o.Tickets)
-                .ThenInclude(t=> t.Screening)
-                .ThenInclude(s => s.Movie)
-                .FirstOrDefault(o => o.ID == ordid);
-            if (order != null)
-            {
-                foreach (Screening s in order.Tickets.Select(t => t.Screening).Distinct())
-                    model[s] = 0;
-                foreach (Ticket t in order.Tickets)
-                    model[t.Screening] += 1;
-            }
-
-            ViewData["Total"] = (order != null) ? order.Total:0;
-            return View(model);
+            this.GetViewData();
+            return View(CurrentOrderDictionary());
         }
-
         public IActionResult ThanksBuy()
         {
             return View();

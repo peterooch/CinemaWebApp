@@ -44,6 +44,8 @@ namespace CinemaWebApp.Controllers
             {
                 return RedirectToAction("Index");
             }
+            if (context.Admins.Find(user.UserID) != null)
+                HttpContext.Session.SetInt32("IsAdmin", 1);
 
             this.SetUserCookie(Email, protector);
             this.SetViewData(user);

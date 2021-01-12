@@ -17,9 +17,7 @@ namespace CinemaWebApp.Controllers
         {
             this.context = context;
         }
-#nullable enable
-        public IActionResult Index(string? weekstart, string? hall)
-#nullable disable
+        public IActionResult Index(string weekstart, string hall)
         {
             this.GetViewData();
 

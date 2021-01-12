@@ -3,23 +3,24 @@
     char[] alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z' };
     int seats = (int)ViewData["seats"];
     ViewData["Styles"] = new string[] { "/css/Hall.css" };
+    int n_cols = 20;
 }
-<div class="absolute">This div element has position: absolute;</div>
-<div style="border:1px solid gray; width:500px;" class="center">
-    <table>
+<div style="align-content: center; text-align: center;">
+    <h2>Movie: @Model.movie | Hall: @Model.hall</h2><br/>
+    <h5>@Model.start - @Model.end</h5>
+    <table class="center">
         <thead>
         <th></th>
-        @for (int i = 1; i <= 10; i++)
+        @for (int i = 1; i <= n_cols; i++)
         {
             <th>@i</th>
-
         }
         </thead>
         @for (int i = 0; i <= seats; i++)
         {
             <tr>
-                <th>@alphabet[i / 10]</th>
-                @for (int j = 0; j < 10; j++, i++)
+                <th>@alphabet[i / n_cols]</th>
+                @for (int j = 0; j < n_cols; j++, i++)
                 {
                     @if (Model.seats.Contains(i))
                     {
@@ -32,19 +33,11 @@
                 }
             </tr>
         }
-        <!--<tr>
-        <td><div class="seat"></div> </td>
-        <td><div class="seat"></div></td>
-        <td class="walk">  </td>
-        <td><div class="seat"></div></td>
-        <td><div class="seat"></div></td>
-    </tr>-->
     </table>
     <button class="Buytickets" onclick="buy_tickets();">
         Buy Ticket
     </button>
 </div>
-
 
 <script>
     var hall = "@Model.hall";
@@ -77,5 +70,4 @@
             }
         }, false);
     }
-
 </script>

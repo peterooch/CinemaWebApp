@@ -27,13 +27,9 @@ namespace CinemaWebApp.Models
             this.MinAge   = MinAge;
             this.Discount = Discount;
         }
-        public double TicketCost()
-        {
-            return CalcPrice(1);
-        }
         public double CalcPrice(int ticket_count)
         {
-            return (Price * (Discount / 100)) * ticket_count;
+            return Price * ((100 - Discount)/100) * ticket_count;
         }
         public override string ToString()
         {

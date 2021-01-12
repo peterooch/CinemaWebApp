@@ -14,7 +14,7 @@
     @foreach (Screening s in Model)
     {
         <tr>
-            <td>@s.Movie.Name</td>
+            <td>@s.Movie</td>
             <td>@s.StartTime</td>
             <td>@s.HallID</td>
             <td><a href="/Hall/Index?hall=@s.HallID&time=@s.StartTime.ToString(Screening.Format)">Buy ticket</a></td>

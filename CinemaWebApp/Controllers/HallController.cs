@@ -20,6 +20,8 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult Index(string hall, string time)
         {
+            this.GetViewData();
+
             if (!context.Halls.Any(h => h.Id == hall))
             {
                 return RedirectToAction("Index", "Home");

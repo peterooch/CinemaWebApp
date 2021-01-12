@@ -22,7 +22,6 @@ namespace CinemaWebApp.Controllers
             SeedData.Init(context);
             protector = provider.SetCookieProtector();
         }
-
         public IActionResult Index(string cat, string age = "0")
         {
             if (HttpContext.Request.Cookies.TryGetValue(ExtensionMethods.UserCookie, out string cookie))
@@ -34,6 +33,8 @@ namespace CinemaWebApp.Controllers
                 if (user != null)
                     this.SetViewData(user);
             }
+
+            this.IsAdmin(context);
 
             if (!uint.TryParse(age, out uint i_age))
                 i_age = 0;
@@ -53,6 +54,7 @@ namespace CinemaWebApp.Controllers
 
         public IActionResult Movie(string name)
         {
+            this.GetViewData();
             IQueryable<Screening> screenings = context.Screenings
                 .Include(s => s.Movie)
                 .Where(s => s.Movie.Name == name && s.StartTime >= DateTime.Now);

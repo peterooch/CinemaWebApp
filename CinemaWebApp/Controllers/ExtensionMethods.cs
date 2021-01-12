@@ -36,11 +36,13 @@ namespace CinemaWebApp.Controllers
         }
         public static bool IsAdmin(this Controller controller, DataContext context)
         {
-#if false
             int? is_admin = controller.HttpContext.Session.GetInt32("IsAdmin");
 
             if (is_admin == 1)
+            {
+                controller.GetViewData();
                 return true;
+            }
 
             int userid = controller.HttpContext.Session.GetInt32("UserID") ?? default;
 
@@ -51,7 +53,7 @@ namespace CinemaWebApp.Controllers
 
             if (admin is null)
                 return false;
-#endif
+
             controller.HttpContext.Session.SetInt32("IsAdmin", 1);
             controller.GetViewData();
             return true;

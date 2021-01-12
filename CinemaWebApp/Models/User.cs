@@ -17,7 +17,6 @@ namespace CinemaWebApp.Models
         public string LastName { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
-
         public bool VerifyPassword(string password)
         {
             using SHA512Managed HashObject = new SHA512Managed();
@@ -29,7 +28,6 @@ namespace CinemaWebApp.Models
             /* Now check if it matches the stored hashed password */ 
             return HashString == PasswordHash;
         }
-
         public void StorePassword(string password)
         {
             using SHA512Managed HashObject = new SHA512Managed();

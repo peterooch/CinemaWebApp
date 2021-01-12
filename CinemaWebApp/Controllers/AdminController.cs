@@ -20,6 +20,9 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult Index()
         {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
         public IActionResult Movies()
@@ -31,6 +34,9 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult EditMovie(string name)
         {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
             bool exists = context.Movies.Any(m => m.Name == name);
             ViewData["NewMovie"] = !exists;
 
@@ -48,39 +54,26 @@ namespace CinemaWebApp.Controllers
             };
             return View(model);
         }
-        public class MovieForm
+        public class MovieForm : Movie
         {
-            public string Name { get; set; }
-            public TimeSpan Duration { get; set; }
-            public double Price { get; set; }
-            public int MinAge { get; set; }
-            public string Category { get; set; }
-            public int Discount { get; set; }
             public IFormFile Poster { get; set; }
         }
         [HttpPost]
         public IActionResult UpdateMovie([FromForm]MovieForm form)
         {
-            Movie movie = new Movie
-            {
-                Name     = form.Name,
-                Duration = form.Duration,
-                Price    = form.Price,
-                MinAge   = form.MinAge,
-                Category = form.Category,
-                Discount = form.Discount
-            };
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
 
             if (context.Movies.Any(m => m.Name == form.Name))
-                context.Update(movie);
+                context.Movies.Update(form);
             else
-                context.Add(movie);
+                context.Movies.Add(form);
 
             context.SaveChanges();
             
             if (form.Poster != null)
             {
-                string dest_path = $"wwwroot/PIC/{movie.Name}.jpg";
+                string dest_path = $"wwwroot/PIC/{form.Name}.jpg";
 
                 if (System.IO.File.Exists(dest_path))
                     System.IO.File.Delete(dest_path);
@@ -94,6 +87,9 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult NewScreening()
         {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
             NewScreeningVM viewmodel = new NewScreeningVM
             {
                 movies = context.Movies,
@@ -111,6 +107,9 @@ namespace CinemaWebApp.Controllers
         [HttpPost]
         public IActionResult AddScreening([FromForm]ScreeningForm form)
         {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
             DateTime StartTime = form.StartDay + form.StartHour;
             Movie movie = context.Movies.Find(form.MovieName);
 
@@ -138,6 +137,9 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult Halls()
         {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
             return View(context.Halls);
         }
         public IActionResult ManageHall(string hallID)
