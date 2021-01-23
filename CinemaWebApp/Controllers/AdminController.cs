@@ -187,6 +187,7 @@ namespace CinemaWebApp.Controllers
             public int IsAdmin { get; set; }
             public string NewPassword { get; set; }
         }
+        /* Used for both admin addition and user info updates */
         [HttpPost]
         public IActionResult UpdateUser([FromForm]UserForm form)
         {

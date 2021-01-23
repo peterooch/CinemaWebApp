@@ -25,6 +25,8 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult Index()
         {
+            this.GetViewData();
+
             User user = GetCurrentUser();
 
             if (user == null)
@@ -34,6 +36,8 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult History()
         {
+            this.GetViewData();
+
             User user = GetCurrentUser();
             if (user == null)
                 RedirectToAction("Index", "Home");
@@ -51,6 +55,8 @@ namespace CinemaWebApp.Controllers
         }
         public IActionResult Update()
         {
+            this.GetViewData();
+
             User user = GetCurrentUser();
             if (user == null)
                 RedirectToAction("Index", "Home");
