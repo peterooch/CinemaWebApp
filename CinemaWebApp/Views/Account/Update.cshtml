@@ -1,0 +1,19 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Update Information";
+}
+<form action="/Admin/UpdateUser" method="post">
+    <input type="hidden" name="UserID" value="@Model.UserID" />
+    <input type="hidden" name="IsAdmin" value="0" />
+    <label for="Email">Email:</label><br />
+    <input type="text" name="Email" class="form-control" value="@Model.Email" required /><br />
+    <label for="FirstName">First Name:</label><br />
+    <input type="text" name="FirstName" class="form-control" value="@Model.FirstName" required /><br />
+    <label for="LastName">Last Name:</label><br />
+    <input type="text" name="LastName" class="form-control" value="@Model.LastName" required /><br />
+    <label for="NewPassword">New Password: (leave empty to not change it)</label><br />
+    <input type="password" name="NewPassword" class="form-control" /><br />
+    <button type="submit" class="btn btn-primary">
+        Update Information
+    </button>
+</form>

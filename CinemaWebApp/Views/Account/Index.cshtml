@@ -1,0 +1,9 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Account Page";
+}
+<h3>Hello @Model.FirstName @Model.LastName</h3><br/>
+<div class="btn-group">
+    <a class="btn btn-primary" href="/Account/History">Purchase History</a>
+    <a class="btn btn-primary" href="/Account/Update">Update User Information</a>
+</div>

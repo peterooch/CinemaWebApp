@@ -175,5 +175,57 @@ namespace CinemaWebApp.Controllers
             context.SaveChanges();
             return RedirectToAction("Halls");
         }
+        public IActionResult AddAdminPage()
+        {
+            if (!this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
+            return View();
+        }
+        public class UserForm : User
+        {
+            public int IsAdmin { get; set; }
+            public string NewPassword { get; set; }
+        }
+        [HttpPost]
+        public IActionResult UpdateUser([FromForm]UserForm form)
+        {
+            bool IsAdmin = form.IsAdmin == 1;
+
+            if (IsAdmin && !this.IsAdmin(context))
+                return RedirectToAction("Index", "Home");
+
+            User user;
+
+            if (IsAdmin || this.IsAdmin(context))
+            {
+                IsAdmin = true;
+                user = new Admin(form);
+            }
+            else
+            {
+                if (HttpContext.Session.GetInt32("UserID") != form.UserID || !context.Users.Any(u => u.UserID == form.UserID))
+                    return RedirectToAction("Index", "Home");
+
+                user = form;
+            }
+            if (!string.IsNullOrEmpty(form.NewPassword))
+            {
+                user.StorePassword(form.NewPassword);
+            }
+            else
+            {
+                User dbobject = context.Users.AsNoTracking().Single(u => u.UserID == user.UserID);
+                user.PasswordHash = dbobject.PasswordHash;
+                user.PasswordSalt = dbobject.PasswordSalt;
+            }
+            if (IsAdmin)
+                context.Admins.Update(user as Admin);
+            else
+                context.Users.Update(user);
+
+            context.SaveChanges();
+            return (IsAdmin) ? RedirectToAction("Index") : RedirectToAction("Index", "Home");
+        }
     }
 }

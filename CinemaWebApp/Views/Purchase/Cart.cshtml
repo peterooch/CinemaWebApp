@@ -30,7 +30,6 @@
 </table>
 <label for="total">Total price:</label>
 <input type="text" id="totalprice" name="totalprice" value="@(((double)ViewData["Total"]).ToString("N1"))" disabled="disabled"><br><br>
-<button style="position:static" class="confirmBT">
+<a style="position:static" class="btn btn-primary" href="/Purchase/Checkout">
     Check out
-</button>
-
+</a>

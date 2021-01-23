@@ -1,0 +1,31 @@
+﻿@model Dictionary<int, Dictionary<Screening, int>>
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<h2>Order History:</h2>
+@foreach(var pair in Model)
+{
+<div>
+    <h5>Order ID: @pair.Key</h5><br/>
+    <table style="width:100%">
+        <tr>
+            <th>Movie</th>
+            <th>Date</th>
+            <th>Hall</th>
+            <th>Number of tickets</th>
+            <th>Price per ticket</th>
+        </tr>
+        @foreach (var pair2 in pair.Value)
+        {
+            <tr>
+                <td>@pair2.Key.Movie</td>
+                <td>@pair2.Key.StartTime</td>
+                <td>@pair2.Key.HallID</td>
+                <td>@pair2.Value</td>
+                <td>@pair2.Key.Movie.Price</td>
+            </tr>
+        }
+    </table>
+</div>
+}

@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Add Admin";
+}
+<form action="/Admin/UpdateUser" method="post">
+    <input type="hidden" name="User" value="0" />
+    <input type="hidden" name="IsAdmin" value="1" />
+    <label for="Email">Email:</label><br />
+    <input type="text" name="Email" class="form-control" required/><br />
+    <label for="FirstName">First Name:</label><br />
+    <input type="text" name="FirstName" class="form-control" required/><br />
+    <label for="LastName">Last Name:</label><br />
+    <input type="text" name="LastName" class="form-control" required/><br />
+    <label for="NewPassword">Password:</label><br />
+    <input type="password" name="NewPassword" class="form-control" required/><br />
+    <button type="submit" class="btn btn-primary">
+        Add Admin
+    </button>
+</form>

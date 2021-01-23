@@ -77,12 +77,11 @@ namespace CinemaWebApp.Controllers
             HttpContext.Session.SetInt32("CurrentOrder", ticketOrder.ID);
             return "/Purchase/Cart";
         }
-        private Dictionary<Screening, int> CurrentOrderDictionary()
+        private TicketOrder GetCurrentOrder()
         {
-            Dictionary<Screening, int> model = new Dictionary<Screening, int>();
             int? ordid = HttpContext.Session.GetInt32("CurrentOrder");
             int? uid = HttpContext.Session.GetInt32("UserID");
-            
+
             if (ordid == null && uid != null)
             {
                 TicketOrder t = context.TicketOrders
@@ -99,13 +98,14 @@ namespace CinemaWebApp.Controllers
                 .ThenInclude(t => t.Screening)
                 .ThenInclude(s => s.Movie)
                 .FirstOrDefault(o => o.ID == ordid);
-            if (order != null)
-            {
-                foreach (Screening s in order.Tickets.Select(t => t.Screening).Distinct())
-                    model[s] = 0;
-                foreach (Ticket t in order.Tickets)
-                    model[t.Screening] += 1;
-            }
+
+            return order;
+        }
+        private Dictionary<Screening, int> CurrentOrderDictionary()
+        {
+            TicketOrder order = GetCurrentOrder();
+
+            Dictionary<Screening, int> model = order?.ToDictionary() ?? new Dictionary<Screening, int>();
 
             ViewData["Total"] = order?.Total ?? 0.0;
             ViewData["OrderID"] = order?.ID;
@@ -121,8 +121,18 @@ namespace CinemaWebApp.Controllers
             this.GetViewData();
             return View(CurrentOrderDictionary());
         }
+
         public IActionResult ThanksBuy()
         {
+            TicketOrder current_order = GetCurrentOrder();
+
+            if (current_order != null)
+            {
+                current_order.Paid = true;
+                context.TicketOrders.Update(current_order);
+                context.SaveChanges();
+            }
+            HttpContext.Session.Remove("CurrentOrder");
             return View();
         }
     }
