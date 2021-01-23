@@ -22,7 +22,7 @@ namespace CinemaWebApp.Data
         public DataContext(DbContextOptions options)
             : base(options)
         {
-            Database.Migrate();
+            Database.EnsureCreated();
         }
         /* This static method is makes class compatible with multiple database providers,
            just need to have the proper settings stored in appsettings.json and add code to enable new providers

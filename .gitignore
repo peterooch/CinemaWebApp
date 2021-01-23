@@ -341,4 +341,4 @@ healthchecksdb
 
 # Custom
 data.db
-#Migrations
+Migrations
